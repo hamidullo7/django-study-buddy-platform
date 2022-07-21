@@ -94,7 +94,12 @@ def room(request, pk):
 
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
-    context = {'user': user}
+    rooms = user.room_set.all()
+    room_message = user.message_set.all()
+    topics = Topic.objects.all()
+    context = {'user': user, 'rooms': rooms, 'room_message': room_message, 
+    'topics': topics
+    }
     return render(request, 'base/profile.html', context)
 
 @login_required(login_url='login')
@@ -123,7 +128,9 @@ def updateRoom(request, pk):
     if request.method == "POST":
         form = RoomForm(request.POST, instance=room)
         if form.is_valid():
-            form.save()
+            room = form.save(freeze=False)
+            room.host = request.user
+            room.save()
             return redirect('home')
 
     context = {"form": form}
