@@ -67,7 +67,6 @@ def home(request):
         Q(description__icontains=q)
     ) # agarda i olib tashlansa casesensitive bolib qoladi
     room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
-    print(room_messages)
     topics = Topic.objects.all()[0:5]
     context = {'rooms': rooms, "topics": topics, "count_room": len(rooms),
     'room_messages': room_messages}
