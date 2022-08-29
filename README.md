@@ -1,0 +1,1 @@
+# django-study-buddy-platform
